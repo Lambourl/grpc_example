@@ -58,7 +58,7 @@ target_link_libraries(hw_grpc_proto
 
 # Targets greeter_[async_](client|server)
 foreach(_target
-  greeter_client greeter_server )
+  greeter_client greeter_server)
   add_executable(${_target} "${_target}.cc")
   target_link_libraries(${_target}
     hw_grpc_proto
@@ -66,3 +66,10 @@ foreach(_target
     ${_GRPC_GRPCPP}
     ${_PROTOBUF_LIBPROTOBUF})
 endforeach()
+
+add_executable(greeter_client_server "greeter_client_server.cpp")
+target_link_libraries(greeter_client_server
+  hw_grpc_proto
+  ${_REFLECTION}
+  ${_GRPC_GRPCPP}
+  ${_PROTOBUF_LIBPROTOBUF})
