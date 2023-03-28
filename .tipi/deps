@@ -1,0 +1,11 @@
+{ 
+ "tipi-deps/grpc": {
+    "@": "grpc-v1.40.0-without-submodules-clean",
+    "u": true,
+    "id": {
+      "host_name": "github.com",
+      "org_name": "grpc",
+      "repo_name": "grpc"
+    }
+  }
+}
