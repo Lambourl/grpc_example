@@ -20,6 +20,8 @@
 cmake_minimum_required(VERSION 3.5.1)
 
 project(HelloWorld C CXX)
+set (CMAKE_CXX_STANDARD 17)
+
 
 include(./cmake/common.cmake)
 
@@ -68,16 +70,22 @@ foreach(_target
 endforeach()
 
 set(TARGET_NAME "greeter_client_server")
+find_package(tipi-build_cute_ext CONFIG REQUIRED)
+
 
 aux_source_directory(./Test SRC_LIST)
 
 add_executable(${TARGET_NAME} ${SRC_LIST})
 
-target_link_libraries(${TARGET_NAME}
+get_target_property(CUTE_EXT_INCLUDE_ROOT tipi-build_cute_ext::cute_ext INTERFACE_INCLUDE_DIRECTORIES)
+target_include_directories(${TARGET_NAME} PUBLIC ${CUTE_EXT_INCLUDE_ROOT}/cute )
+target_link_libraries(${TARGET_NAME} PUBLIC
   hw_grpc_proto
   ${_REFLECTION}
   ${_GRPC_GRPCPP}
-  ${_PROTOBUF_LIBPROTOBUF})
+  ${_PROTOBUF_LIBPROTOBUF}
+  tipi-build_cute_ext::cute_ext)
+
 
 enable_testing()
 

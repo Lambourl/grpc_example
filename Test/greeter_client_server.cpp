@@ -15,6 +15,11 @@
 #include "helloworld.grpc.pb.h"
 #endif
 
+#include "cute.h"
+#include "ide_listener.h"
+#include "xml_listener.h"
+#include "cute_runner.h"
+
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
@@ -120,7 +125,7 @@ class GreeterClient {
   std::unique_ptr<Greeter::Stub> stub_;
 };
 
-int main(){
+void grpc_main(){
    std::thread GRPC_server { RunServer };
     std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
@@ -136,7 +141,30 @@ int main(){
     reply = greeter.SayHelloAgain(user);
     std::cout << "Greeter received: " << reply << std::endl;
     assert(reply.size() > 0);
-    
+}
 
-    return 0;
+class OutTests {
+public:
+    void grpc_main_class(){ 
+      grpc_main();       
+        
+    }
+};
+
+cute::suite make_suite_Test(){
+    cute::suite s {};
+    s.push_back(CUTE_SMEMFUN(OutTests,grpc_main_class));
+    return s;
+}
+
+void runSuite(int argc, char const *argv[]){
+    cute::xml_file_opener xmlfile(argc, argv);
+    cute::xml_listener < cute::ide_listener<> > lis(xmlfile.out);
+    auto runner = cute::makeRunner(lis, argc, argv);
+    runner(make_suite_Test(), "TestSuite");
+}
+
+int main(int argc, char const *argv[]){
+    runSuite(argc, argv);
+    return EXIT_SUCCESS;
 }
