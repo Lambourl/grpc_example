@@ -67,9 +67,21 @@ foreach(_target
     ${_PROTOBUF_LIBPROTOBUF})
 endforeach()
 
-add_executable(greeter_client_server "greeter_client_server.cpp")
-target_link_libraries(greeter_client_server
+set(TARGET_NAME "greeter_client_server")
+
+aux_source_directory(./Test SRC_LIST)
+
+add_executable(${TARGET_NAME} ${SRC_LIST})
+
+target_link_libraries(${TARGET_NAME}
   hw_grpc_proto
   ${_REFLECTION}
   ${_GRPC_GRPCPP}
   ${_PROTOBUF_LIBPROTOBUF})
+
+enable_testing()
+
+add_test(NAME ${TARGET_NAME} COMMAND $<TARGET_FILE:${TARGET_NAME}> )
+
+
+  

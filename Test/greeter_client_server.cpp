@@ -3,6 +3,7 @@
 #include <string>
 #include <thread>
 #include <chrono>
+#include <cassert>
 
 #include <grpcpp/ext/proto_server_reflection_plugin.h>
 #include <grpcpp/grpcpp.h>
@@ -130,9 +131,12 @@ int main(){
 
     std::string reply = greeter.SayHello(user);
     std::cout << "Greeter received: " << reply << std::endl;
+    assert(reply.size() > 0);
 
     reply = greeter.SayHelloAgain(user);
     std::cout << "Greeter received: " << reply << std::endl;
+    assert(reply.size() > 0);
+    
 
     return 0;
 }
